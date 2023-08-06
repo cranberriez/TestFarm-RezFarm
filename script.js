@@ -66,7 +66,7 @@ window.onload = function() {
     .then(response => response.json())
     .then(data => {
         rawData = data;
-
+        
         const sortOptionSelect = document.getElementById('sortOptions');
         sortOptionSelect.addEventListener('change', () => {
             processItems(sortOptionSelect.value);
