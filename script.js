@@ -21,9 +21,17 @@ function processItems(sortOption) {
 
     // sort the items based on the selected option
     processedItems.sort((a, b) => b[sortOption] - a[sortOption]);
+
+    // Move DOM elements in place according to the new order
+    for (let i = 0; i < processedItems.length; i++) {
+        const row = document.getElementById(processedItems[i].key);
+        container.appendChild(row);
+    }
 }
 
 function renderItems() {
+    if (container.children.length > 0) return;  // prevent from rendering items more than once
+
     let html = `
         <div class="row">
             <div class="cell">Rank</div>
@@ -38,7 +46,7 @@ function renderItems() {
 
     processedItems.forEach((item, i) => {
         html += `
-            <div class="row">
+            <div class="row" id="${item.key}">
                 <div class="cell">${i + 1}</div>
                 <div class="cell">${item.summary}</div>
                 <div class="cell">${item.animpath}</div>
@@ -50,7 +58,7 @@ function renderItems() {
         `;
     });
 
-    container.innerHTML = html;
+    container.innerHTML += html;
 }
 
 window.onload = function() {
@@ -62,7 +70,6 @@ window.onload = function() {
         const sortOptionSelect = document.getElementById('sortOptions');
         sortOptionSelect.addEventListener('change', () => {
             processItems(sortOptionSelect.value);
-            renderItems();
         });
 
         // Initial processing and rendering
